@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Blog\Presentation\Command;
 
-use Blog\Domain\User\Entity\Admin;
+use Blog\Infrastructure\Entity\Admin;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -13,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[AsCommand(name: 'blog:create-admin')]
-class CreateAdminCommand extends Command
+final class CreateAdminCommand extends Command
 {
     public function __construct(
         private readonly EntityManagerInterface $em,
