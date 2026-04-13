@@ -2,44 +2,43 @@
 
 declare(strict_types=1);
 
-namespace Blog\Domain\User\Entity;
+namespace Blog\Infrastructure\Entity;
 
-use Blog\Domain\User\Repository\AdminRepository;
-use Deprecated;
+use Blog\Domain\Admin\Admin as AdminInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Uid\Uuid;
 
-#[ORM\Entity(repositoryClass: AdminRepository::class)]
+#[ORM\Entity]
+#[ORM\Table(name: 'admin')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-class Admin implements UserInterface, PasswordAuthenticatedUserInterface
+class Admin implements AdminInterface, UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(name: 'uuid', type: 'uuid', unique: true)]
+    private string $uuid;
 
-    #[ORM\Column(length: 180)]
-    private ?string $email = null;
+    #[ORM\Column(name: 'email', length: 180)]
+    private string $email;
 
-    /**
-     * @var list<string> The user roles
-     */
-    #[ORM\Column]
+    #[ORM\Column(name: 'roles', type: 'json')]
     private array $roles = [];
 
-    /**
-     * @var string The hashed password
-     */
-    #[ORM\Column]
-    private ?string $password = null;
+    #[ORM\Column(name: 'password', type: 'string')]
+    private string $password;
 
-    public function getId(): ?int
+    public function __construct()
     {
-        return $this->id;
+        $this->uuid = Uuid::v4()->toRfc4122();
     }
 
-    public function getEmail(): ?string
+    public function getUuid(): string
+    {
+        return $this->uuid;
+    }
+
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -51,31 +50,19 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }
 
-    /**
-     * @param list<string> $roles
-     */
     public function setRoles(array $roles): static
     {
         $this->roles = $roles;
@@ -83,9 +70,6 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
     public function getPassword(): ?string
     {
         return $this->password;
@@ -98,9 +82,6 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * Ensure the session doesn't contain actual password hashes by CRC32C-hashing them, as supported since Symfony 7.3.
-     */
     public function __serialize(): array
     {
         $data = (array) $this;
@@ -109,9 +90,8 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
         return $data;
     }
 
-    #[Deprecated]
     public function eraseCredentials(): void
     {
-        // @deprecated, to be removed when upgrading to Symfony 8
+        // nothing here for now
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Blog\Presentation\Security\Authentication;
 
+use Blog\Infrastructure\Admin\AdminManager;
 use Exception;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,12 +26,15 @@ final class BlogAuthenticator extends AbstractLoginFormAuthenticator
 
     public const LOGIN_ROUTE = 'app_login';
 
-    public function __construct(private readonly UrlGeneratorInterface $urlGenerator) {}
+    public function __construct(
+        private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly AdminManager $adminManager,
+    ) {}
 
     public function authenticate(Request $request): Passport
     {
-        $email = $request->getPayload()->getString('email');
-        $password = $request->getPayload()->getString('password');
+        $email = $request->request->get('email');
+        $password = $request->request->get('password');
 
         $request->getSession()->set(SecurityRequestAttributes::LAST_USERNAME, $email);
 

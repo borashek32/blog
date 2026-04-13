@@ -9,4 +9,4 @@ services:
         resource: '../src/'
 
 imports:
-    - { resource: services/* }
+    - { resource: services/admin/* }

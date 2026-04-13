@@ -1,12 +1,12 @@
 security:
     password_hashers:
-        Blog\Domain\User\Entity\Admin:
+        Blog\Infrastructure\Entity\Admin:
             algorithm: auto
 
     providers:
         admin_provider:
             entity:
-                class: Blog\Domain\User\Entity\Admin
+                class: Blog\Infrastructure\Entity\Admin
                 property: email
 
     firewalls:
