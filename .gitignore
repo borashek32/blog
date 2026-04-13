@@ -1,0 +1,39 @@
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/public/bundles/
+/public/uploads/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+.package-lock.json
+.idea/
+node_modules/
+/.github
+
+###> symfony/phpunit-bridge ###
+.phpunit.result.cache
+.php-cs-fixer.cache
+.phpunit
+/phpunit.xml
+###< symfony/phpunit-bridge ###
+
+###> symfony/web-server-bundle ###
+/.web-server-pid
+###< symfony/web-server-bundle ###
+
+# Эти фронтовые файлы собираются на серваке и у каждого локально,
+# скрипты (команды) сборки смотри в файле package.json
+/public/build
+/public/dist
+/templates/admin/entry.twig
+/assets/entry/src/api
+openapitools.json
+phpstan.neon.dist
+*.private.env.json
+
+###> friendsofphp/php-cs-fixer ###
+/.php-cs-fixer.php
+/.php-cs-fixer.cache
+###< friendsofphp/php-cs-fixer ###
