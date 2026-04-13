@@ -1,0 +1,27 @@
+security:
+    password_hashers:
+        Blog\Domain\User\Entity\Admin:
+            algorithm: auto
+
+    providers:
+        admin_provider:
+            entity:
+                class: Blog\Domain\User\Entity\Admin
+                property: email
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            lazy: true
+            provider: admin_provider
+
+            custom_authenticator: Blog\Presentation\Security\Authentication\BlogAuthenticator
+
+            logout:
+                path: app_logout
+
+    access_control:
+        - { path: ^/admin, roles: ROLE_ADMIN }
