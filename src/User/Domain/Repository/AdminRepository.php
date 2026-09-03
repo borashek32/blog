@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Blog\Domain\User\Repository;
+namespace Blog\User\Domain\Repository;
 
-use Blog\Domain\User\Entity\Admin;
+use Blog\User\Domain\Entity\Admin;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;

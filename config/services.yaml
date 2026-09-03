@@ -7,6 +7,3 @@ services:
 
     Blog\:
         resource: '../src/'
-
-imports:
-    - { resource: services/* }

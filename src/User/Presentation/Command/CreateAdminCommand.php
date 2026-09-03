@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Blog\Presentation\Command;
+namespace Blog\User\Presentation\Command;
 
-use Blog\Domain\User\Entity\Admin;
+use Blog\User\Domain\Entity\Admin;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;

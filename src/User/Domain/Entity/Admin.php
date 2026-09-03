@@ -2,22 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Blog\Domain\User\Entity;
+namespace Blog\User\Domain\Entity;
 
-use Blog\Domain\User\Repository\AdminRepository;
+use Blog\User\Domain\Repository\AdminRepository;
 use Deprecated;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: AdminRepository::class)]
+#[ORM\Table(name: 'admin')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 class Admin implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(name: 'uuid', type: 'uuid', unique: true)]
+    private string $uuid;
 
     #[ORM\Column(length: 180)]
     private ?string $email = null;
@@ -34,9 +35,14 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    public function getId(): ?int
+    public function __construct()
     {
-        return $this->id;
+        $this->uuid = Uuid::v4()->toRfc4122();
+    }
+
+    public function getUuid(): string
+    {
+        return $this->uuid;
     }
 
     public function getEmail(): ?string
