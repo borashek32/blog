@@ -1,12 +1,12 @@
 security:
     password_hashers:
-        Blog\Infrastructure\Entity\Admin:
+        Blog\User\Domain\Entity\Admin:
             algorithm: auto
 
     providers:
         admin_provider:
             entity:
-                class: Blog\Infrastructure\Entity\Admin
+                class: Blog\User\Domain\Entity\Admin
                 property: email
 
     firewalls:
@@ -18,10 +18,17 @@ security:
             lazy: true
             provider: admin_provider
 
-            custom_authenticator: Blog\Presentation\Security\Authentication\BlogAuthenticator
+            form_login:
+                login_path: app_login
+                check_path: app_login
+                username_parameter: email
+                password_parameter: password
+                enable_csrf: true
+                default_target_path: sonata_admin_dashboard
 
             logout:
-                path: app_logout
+                path: /logout
+                target: app_login
 
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
